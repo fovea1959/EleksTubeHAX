@@ -60,6 +60,8 @@ extern char MQTTCommandBackPattern[];
 extern bool MQTTCommandPatternReceived;
 extern bool MQTTCommandBackPatternReceived;
 extern uint16_t MQTTCommandBackColorPhase;
+extern float MQTTCommandBackHue;
+extern float MQTTCommandBackSaturation;
 extern bool MQTTCommandBackColorPhaseReceived;
 extern uint8_t MQTTCommandGraphic;
 extern uint8_t MQTTCommandMainGraphic;

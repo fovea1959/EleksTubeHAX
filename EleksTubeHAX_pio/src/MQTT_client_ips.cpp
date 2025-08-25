@@ -252,7 +252,7 @@ bool MQTTPublish(const char *Topic, JsonDocument *Json, const bool Retain)
 {
   size_t buffSize = measureJson(*Json) + 3; // Discovery Light = about 720 bytes
 #ifdef DEBUG_OUTPUT_MQTT
-  Serial.printf("DEBUG: TX MQTT message JSON size: %d\n", buffSize);
+  // Serial.printf("DEBUG: TX MQTT message JSON size: %d\n", buffSize);
 #endif
   char *buffer = (char *)malloc(buffSize);
   if (buffer == NULL)
@@ -314,10 +314,12 @@ void MQTTReportState(bool forceUpdateEverything)
     state["brightness"] = MQTTStatusBackBrightness;
     state["effect"] = MQTTStatusBackPattern;
     state["color_mode"] = "hs";
+    // TODO!!!!!
     state["color"]["h"] = backlights.phaseToHue(MQTTStatusBackColorPhase);
     state["color"]["s"] = 100.f;
+    //
     state["pulse_bpm"] = MQTTStatusPulseBpm;
-    state["beath_bpm"] = MQTTStatusBreathBpm;
+    state["breath_bpm"] = MQTTStatusBreathBpm;
     state["rainbow_sec"] = round1(MQTTStatusRainbowSec);
 
     if (!MQTTPublish(concat3(MQTT_CLIENT, "/", TopicBack), &state, MQTT_RETAIN_STATE_MESSAGES))
@@ -713,7 +715,10 @@ void MQTTCallback(char *topic, byte *payload, unsigned int length)
         }
         if (doc["color"].is<JsonObject>())
         {
+          // TODO need to type check the H and S
           MQTTCommandBackColorPhase = backlights.hueToPhase(doc["color"]["h"]);
+          MQTTCommandBackHue = doc["color"]["h"];
+          MQTTCommandBackSaturation = doc["color"]["s"];
           MQTTCommandBackColorPhaseReceived = true;
         }
       }

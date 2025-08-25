@@ -42,6 +42,8 @@ public:
     {
       uint8_t pattern;
       uint16_t color_phase;
+      float hue;
+      float saturation;
       uint8_t intensity;
       uint8_t pulse_bpm;
       uint8_t breath_per_min;
