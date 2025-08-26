@@ -77,15 +77,19 @@ public:
   float getRainbowDuration() { return config->rainbow_sec; }
 
   // Used by all constant color patterns.
-  void setHueAndSaturation(float hue, float saturation) 
-  {
-    config->hue = hue;
-    config->saturation = saturation;
-    pattern_needs_init = true;
-  }
   void setColorPhase(uint16_t phase)
   {
     config->color_phase = phase % max_phase;
+    pattern_needs_init = true;
+  }
+  void setHue(float hue)
+  {
+    config->hue = hue;
+    pattern_needs_init = true;
+  }
+  void setSaturation(float saturation)
+  {
+    config->saturation = saturation;
     pattern_needs_init = true;
   }
   void adjustColorPhase(int16_t adj);
@@ -107,6 +111,9 @@ public:
   uint32_t hueToPhase(float hue);
   float phaseToHue(uint32_t phase);
   uint8_t phaseToIntensity(uint16_t phase);
+
+  float getHue();
+  float getSaturation();
 
   const uint16_t max_phase = 768;  // 256 up, 256 down, 256 off
   const uint8_t max_intensity = 8; // 0 to 7

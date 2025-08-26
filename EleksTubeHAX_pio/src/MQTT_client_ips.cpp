@@ -115,6 +115,8 @@ char MQTTCommandBackPattern[24] = "";
 bool MQTTCommandBackPatternReceived = false;
 
 uint16_t MQTTCommandBackColorPhase = -1;
+float MQTTCommandBackHue = 0.0;
+float MQTTCommandBackSaturation = 100.0;
 bool MQTTCommandBackColorPhaseReceived = false;
 
 uint8_t MQTTCommandGraphic = -1;
@@ -315,8 +317,13 @@ void MQTTReportState(bool forceUpdateEverything)
     state["effect"] = MQTTStatusBackPattern;
     state["color_mode"] = "hs";
     // TODO!!!!!
-    state["color"]["h"] = backlights.phaseToHue(MQTTStatusBackColorPhase);
-    state["color"]["s"] = 100.f;
+    if (backlights.getPattern() == backlights.constant) {
+      state["color"]["h"] = backlights.getHue();
+      state["color"]["s"] = backlights.getSaturation();
+    } else {
+      state["color"]["h"] = backlights.phaseToHue(MQTTStatusBackColorPhase);
+      state["color"]["s"] = 100.f;
+    }
     //
     state["pulse_bpm"] = MQTTStatusPulseBpm;
     state["breath_bpm"] = MQTTStatusBreathBpm;
@@ -913,7 +920,7 @@ void MQTTReportBackOnChange()
     {
 #ifdef DEBUG_OUTPUT_MQTT
       Serial.println("");
-      Serial.println("DEBUG: Disovery messages not sent yet!");
+      Serial.println("DEBUG: Discovery messages not sent yet!");
       Serial.println("DEBUG: Sending discovery messages...");
 #endif
       discoveryReported = MQTTReportDiscovery();
@@ -941,7 +948,7 @@ void MQTTPeriodicReportBack()
     {
 #ifdef DEBUG_OUTPUT_MQTT
       Serial.println("");
-      Serial.println("DEBUG: Disovery messages not sent yet!");
+      Serial.println("DEBUG: Discovery messages not sent yet!");
       Serial.println("DEBUG: Sending discovery messages...");
 #endif
       discoveryReported = MQTTReportDiscovery();

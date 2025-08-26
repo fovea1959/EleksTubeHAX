@@ -353,7 +353,8 @@ void loop()
     MQTTCommandBackColorPhaseReceived = false;
 
     backlights.setColorPhase(MQTTCommandBackColorPhase);
-    backlights.setHueAndSaturation(MQTTCommandBackHue, MQTTCommandBackSaturation);
+    backlights.setHue(MQTTCommandBackHue);
+    backlights.setSaturation(MQTTCommandBackSaturation);
   }
 
   if (MQTTCommandGraphicReceived)

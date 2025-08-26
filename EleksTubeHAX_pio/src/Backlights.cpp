@@ -11,6 +11,8 @@ void Backlights::begin(StoredConfig::Config::Backlights *config_)
     Serial.println("Loaded Backlights config is invalid, using default.  This is normal on first boot.");
     setPattern(rainbow);
     setColorPhase(0);
+    setHue(0.0);
+    setSaturation(0.0);
     setIntensity(max_intensity - 1);
     setPulseRate(60);
     setBreathRate(20);
@@ -78,7 +80,14 @@ void Backlights::loop()
   {
     if (pattern_needs_init)
     {
-      fill(phaseToColor(config->color_phase));
+      // fill(phaseToColor(config->color_phase));
+
+      // hue from HA is 0..360. ColorHSV wants 0..65535
+      // saturation from HA is 0..100. ColorHSV wants 0..255.
+      uint16_t hue = config->hue * (65535.0 / 360.0);
+      uint8_t saturation = config->saturation * (255.0 / 100.0);
+      uint32_t color = ColorHSV(hue, saturation, 255);
+      fill(color);
     }
     if (dimming)
     {
@@ -263,6 +272,17 @@ void Backlights::rainbowPattern()
   }
   show();
 }
+
+float Backlights::getHue()
+{
+  return config->hue;
+}
+
+float Backlights::getSaturation()
+{
+  return config->saturation;
+}
+
 
 const String Backlights::patterns_str[Backlights::num_patterns] =
     {"Dark", "Test", "Constant", "Rainbow", "Pulse", "Breath"};
