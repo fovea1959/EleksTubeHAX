@@ -317,12 +317,12 @@ void MQTTReportState(bool forceUpdateEverything)
     state["effect"] = MQTTStatusBackPattern;
     state["color_mode"] = "hs";
     // TODO!!!!!
-    if (backlights.getPattern() == backlights.constant) {
-      state["color"]["h"] = backlights.getHue();
-      state["color"]["s"] = backlights.getSaturation();
-    } else {
+    if (backlights.getPattern() == backlights.rainbow || backlights.getPattern() == backlights.test) {
       state["color"]["h"] = backlights.phaseToHue(MQTTStatusBackColorPhase);
       state["color"]["s"] = 100.f;
+    } else {
+      state["color"]["h"] = backlights.getHue();
+      state["color"]["s"] = backlights.getSaturation();
     }
     //
     state["pulse_bpm"] = MQTTStatusPulseBpm;

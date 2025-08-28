@@ -84,9 +84,10 @@ void Backlights::loop()
 
       // hue from HA is 0..360. ColorHSV wants 0..65535
       // saturation from HA is 0..100. ColorHSV wants 0..255.
-      uint16_t hue = config->hue * (65535.0 / 360.0);
-      uint8_t saturation = config->saturation * (255.0 / 100.0);
-      uint32_t color = ColorHSV(hue, saturation, 255);
+      uint16_t h = config->hue * (65535.0 / 360.0);
+      uint8_t s = config->saturation * (255.0 / 100.0);
+      uint8_t v = 255;
+      uint32_t color = ColorHSV(h, s, v);
       fill(color);
     }
     if (dimming)
@@ -117,7 +118,27 @@ void Backlights::loop()
 
 void Backlights::pulsePattern()
 {
-  fill(phaseToColor(config->color_phase));
+  // fill(phaseToColor(config->color_phase));
+
+  // hue from HA is 0..360. ColorHSV wants 0..65535
+  // saturation from HA is 0..100. ColorHSV wants 0..255.
+  uint16_t h = config->hue * (65535.0 / 360.0);
+  uint8_t s = config->saturation * (255.0 / 100.0);
+  uint8_t v = 255;
+  uint32_t color = ColorHSV(h, s, v);
+#ifdef DEBUG_OUTPUT_BACK
+  Serial.print("DEBUG: BACK pulse: H S V = ");
+  Serial.print(h);
+  Serial.print(" ");
+  Serial.print(s);
+  Serial.print(" ");
+  Serial.print(v);
+  Serial.print("; phase = ");
+  Serial.print(config->color_phase);
+  Serial.print(" -> ");
+  Serial.println(color, HEX);
+#endif
+  fill(color);
 
   float pulse_length_millis = (60.0f * 1000) / config->pulse_bpm;
   float val = 1 + abs(sin(2 * M_PI * millis() / pulse_length_millis)) * 254;
@@ -136,7 +157,27 @@ void Backlights::pulsePattern()
 
 void Backlights::breathPattern()
 {
-  fill(phaseToColor(config->color_phase));
+  // fill(phaseToColor(config->color_phase));
+
+  // hue from HA is 0..360. ColorHSV wants 0..65535
+  // saturation from HA is 0..100. ColorHSV wants 0..255.
+  uint16_t h = config->hue * (65535.0 / 360.0);
+  uint8_t s = config->saturation * (255.0 / 100.0);
+  uint8_t v = 255;
+  uint32_t color = ColorHSV(h, s, v);
+#ifdef DEBUG_OUTPUT_BACK
+  Serial.print("DEBUG: BACK breathe: H S V = ");
+  Serial.print(h);
+  Serial.print(" ");
+  Serial.print(s);
+  Serial.print(" ");
+  Serial.print(v);
+  Serial.print("; phase = ");
+  Serial.print(config->color_phase);
+  Serial.print(" -> ");
+  Serial.println(color, HEX);
+#endif  
+  fill(color);
 
   // https://sean.voisen.org/blog/2011/10/breathing-led-with-arduino/
   // Avoid a 0 value as it shuts off the LEDs and we have to re-initialize.

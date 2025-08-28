@@ -12,6 +12,7 @@
 
 // #define DEBUG_OUTPUT_IMAGES // uncomment for Debug printing of image loading and drawing
 // #define DEBUG_OUTPUT_MQTT // uncomment for Debug printing of MQTT messages
+// #define DEBUG_OUTPUT_BACK // uncomment for Debug printing of back LED messages
 // #define DEBUG_OUTPUT_RTC // uncomment for Debug printing of RTC chip initialization and time setting
 
 // ************* Type of the clock hardware  *************
