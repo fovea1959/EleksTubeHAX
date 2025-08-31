@@ -336,10 +336,12 @@ void loop()
     MQTTCommandBackPatternReceived = false;
     for (int8_t i = 0; i < Backlights::num_patterns; i++)
     {
+#if 0
       Serial.print("new pattern ");
       Serial.print(MQTTCommandBackPattern);
       Serial.print(", check pattern ");
       Serial.println(Backlights::patterns_str[i]);
+#endif
       if (strcmp(MQTTCommandBackPattern, (Backlights::patterns_str[i]).c_str()) == 0)
       {
         backlights.setPattern(Backlights::patterns(i));

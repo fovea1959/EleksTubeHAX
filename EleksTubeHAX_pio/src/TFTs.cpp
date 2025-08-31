@@ -639,6 +639,9 @@ uint8_t TFTs::nameToClockFace(String name)
       return i + 1;
     }
   }
+  Serial.print("could not convert name \"");
+  Serial.print(name);
+  Serial.println("\" to a clock face!");
   return 1;
 }
 //// END STOLEN CODE
