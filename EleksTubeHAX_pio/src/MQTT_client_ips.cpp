@@ -231,7 +231,7 @@ bool MQTTPublish(const char *Topic, const char *Message, const bool Retain)
 
   bool ok = MQTTclient.publish(Topic, Message, Retain);
 
-#ifdef DEBUG_OUTPUT_MQTT
+#if defined(DEBUG_OUTPUT_MQTT) || defined(DEBUG_OUTPUT_MQTT_TX)
   if (ok)
   {
     Serial.print("DEBUG: TX MQTT: Topic: ");
@@ -598,6 +598,8 @@ void MQTTCallback(char *topic, byte *payload, unsigned int length)
   Serial.print("DEBUG: Converted payload to char array: ");
   Serial.println(message);
   Serial.println("DEBUG: Processing MQTT message...");
+#endif
+#if defined(DEBUG_OUTPUT_MQTT) || defined(DEBUG_OUTPUT_MQTT_RX)
   Serial.print("DEBUG: RX MQTT: ");
   Serial.print(topic);
   Serial.print(" ");
